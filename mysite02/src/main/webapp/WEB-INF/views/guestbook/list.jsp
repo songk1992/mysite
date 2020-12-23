@@ -1,71 +1,96 @@
+<%@page import="java.util.List"%>
+<%@page import="com.bitacademy.mysite.vo.GuestbookVo"%>
+<%@page import="com.bitacademy.mysite.repository.GuestbookRepository"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%
+	List<GuestbookVo> list = new GuestbookRepository().findAll();
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <title>mysite</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<link href="/assets/css/guestbook.css" rel="stylesheet" type="text/css">
+<link href="<%=request.getContextPath() %>/assets/css/guestbook.css" rel="stylesheet" type="text/css">
+
+
 </head>
 <body>
 	<div id="container">
-		<div id="header">
-			<h1>MySite</h1>
-			<ul>
-				<li><a href="">로그인</a><li>
-				<li><a href="">회원가입</a><li>
-				<li><a href="">회원정보수정</a><li>
-				<li><a href="">로그아웃</a><li>
-				<li>님 안녕하세요 ^^;</li>
-			</ul>
-		</div>
+		<jsp:include page="/WEB-INF/views/includes/header.jsp" />
+		
+		
+		
+		<!-- 등록 구간 -->
+		
 		<div id="content">
 			<div id="guestbook">
-				<form action="/guestbook" method="post">
+				<form action="<%=request.getContextPath() %>/guestbook" method="post">
 					<input type="hidden" name="a" value="insert">
 					<table>
 						<tr>
-							<td>이름</td><td><input type="text" name="name"></td>
-							<td>비밀번호</td><td><input type="password" name="pass"></td>
+							<td>이름</td><td><input type="text" name="name" value=""></td>
+							<td>비밀번호</td><td><input type="password" name="password" value=""></td>
 						</tr>
 						<tr>
-							<td colspan=4><textarea name="content" id="content"></textarea></td>
+							<td colspan=4><textarea name="message" id="content"></textarea></td>
 						</tr>
 						<tr>
 							<td colspan=4 align=right><input type="submit" VALUE=" 확인 "></td>
 						</tr>
 					</table>
 				</form>
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				<!-- 보여주기 + 삭제 구간 -->
+				<%
+					int indexNumber = 1;
+				
+					for (GuestbookVo vo : list) {
+				%>
+				
 				<ul>
 					<li>
 						<table>
 							<tr>
-								<td>[4]</td>
-								<td>안대혁</td>
-								<td>2015-11-10 11:22:30</td>
-								<td><a href="">삭제</a></td>
+								<td>[<%=indexNumber++%>]</td>
+								<td><%=vo.getName()%></td>
+								<td><%=vo.getDatetime()%></td>
+								<td>
+								<form action="<%=request.getContextPath()%>/guestbook" method="post">
+									<input type='hidden' name='a' value='deleteform' />
+									<input type='hidden' name='no' value=<%=vo.getNo()%> />
+									<input type="submit" value="삭제">
+								</form>
+								</td>
 							</tr>
 							<tr>
 								<td colspan=4>
-								안녕하세요. ^^;<br>
-								하하하하	
+									<%=vo.getMessage()%>
 								</td>
 							</tr>
 						</table>
 						<br>
 					</li>
 				</ul>
+				
+				<%
+					}
+				%>
+				
 			</div>
 		</div>
-		<div id="navigation">
-			<ul>
-				<li><a href="">안대혁</a></li>
-				<li><a href="">방명록</a></li>
-				<li><a href="">게시판</a></li>
-			</ul>
-		</div>
-		<div id="footer">
-			<p>(c)opyright 2015, 2016, 2017, 2018</p>
-		</div>
+		
+		<jsp:include page="/WEB-INF/views/includes/navigation.jsp" />
+		<jsp:include page="/WEB-INF/views/includes/footer.jsp" />
 	</div>
 </body>
 </html>
