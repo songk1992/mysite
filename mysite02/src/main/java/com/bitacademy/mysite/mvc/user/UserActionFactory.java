@@ -22,10 +22,12 @@ public class UserActionFactory extends ActionFactory {
 			action = new LoginformAction();
 		} else if("login".equals(actionName)) {
 			action = new LoginAction();
+		} else if("updateform".equals(actionName)) {
+			action = new UpdateformAction();
 		} else {
 			action = new MainAction();
 		}
-		
+			
 		return action;
 	}
 
