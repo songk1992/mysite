@@ -12,8 +12,8 @@
 		<project.reporting.ouputEncoding>UTF-8</project.reporting.ouputEncoding>
 	</properties>
 
-	<dependencies>
-	</dependencies>
+  <dependencies>
+  </dependencies>
 	
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
