@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import com.bitacademy.mysite.vo.UserVo;
 
 public class UserRepository {
+	
+	
+	
 	public UserVo findByEmailAndPassword(UserVo vo) {
 		UserVo userVo = null;
 		
@@ -41,6 +44,68 @@ public class UserRepository {
 				userVo.setNo(no);
 				userVo.setName(name);
 				
+				
+			}
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			try {
+				// 3. 자원정리
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		
+		return userVo;
+	}
+	
+	public UserVo findEmailAndGender(UserVo vo) {
+		UserVo userVo = null;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			
+			
+			// TODO : 보안상 문제 있음
+			// 3. SQL 준비
+			String sql =
+				"select no, email, gender, name\r\n" + 
+				"from user\r\n" + 
+				"where no = ? and name = ?";
+			pstmt = conn.prepareStatement(sql);
+			
+			// 4. 바인딩
+			pstmt.setLong(1, vo.getNo());
+			pstmt.setString(2, vo.getName());
+			
+			
+			// 5. sql문 실행
+			rs = pstmt.executeQuery();
+			
+			// 6. 데이터 가져오기
+			if(rs.next()) {
+				long no = rs.getLong(1);
+				String email = rs.getString(2);
+				String gender = rs.getString(3);
+				String name = rs.getString(4);
+				
+				userVo = new UserVo();
+				userVo.setNo(no);
+				userVo.setEmail(email);
+				userVo.setGender(gender);
+				userVo.setName(name);
 				
 			}
 		} catch (SQLException e) {
@@ -110,6 +175,70 @@ public class UserRepository {
 		return result;		
 	}
 	
+	
+	public UserVo updateByEmailAndPassword(UserVo userVo) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			conn = getConnection();
+			
+			
+			// TODO : 보안상 문제 있음
+			// 3. SQL 준비
+			String sql =
+				"UPDATE user\r\n" + 
+				"SET name = ?,  gender = ?, email = ?\r\n" + 
+				"WHERE no = ? and password = ?;";
+			pstmt = conn.prepareStatement(sql);
+			
+			// 4. 바인딩
+			pstmt.setString(1, userVo.getName());
+			pstmt.setString(2, userVo.getGender());
+			pstmt.setString(3, userVo.getEmail());
+			pstmt.setLong(4, userVo.getNo());
+			pstmt.setString(5, userVo.getPassword());
+			
+			// 5. sql문 실행
+			rs = pstmt.executeQuery();
+			
+			// 6. 데이터 가져오기
+			if(rs.next()) {
+				long no = rs.getLong(1);
+				String email = rs.getString(2);
+				String gender = rs.getString(3);
+				String name = rs.getString(4);
+				
+				userVo = new UserVo();
+				userVo.setNo(no);
+				userVo.setEmail(email);
+				userVo.setGender(gender);
+				userVo.setName(name);
+				
+			}
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			try {
+				// 3. 자원정리
+				if(rs != null) {
+					rs.close();
+				}
+				if(pstmt != null) {
+					pstmt.close();
+				}
+				if(conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+		
+		return userVo;
+	}
+	
 	private Connection getConnection() throws SQLException{
 		Connection conn = null;
 		try {
@@ -125,4 +254,6 @@ public class UserRepository {
 		
 		return conn;
 	}
+
+
 }

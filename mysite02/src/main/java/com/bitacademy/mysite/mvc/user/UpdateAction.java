@@ -12,35 +12,40 @@ import com.bitacademy.mysite.vo.UserVo;
 import com.bitacademy.web.mvc.Action;
 import com.bitacademy.web.util.WebUtil;
 
-public class LoginAction implements Action {
+public class UpdateAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String no = request.getParameter("no");
+		String name = request.getParameter("name");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		
+		String gender = request.getParameter("gender");
+
 		UserVo vo = new UserVo();
+		
+		vo.setNo(Long.valueOf(no));
+		vo.setName(name);
 		vo.setEmail(email);
 		vo.setPassword(password);
+		vo.setGender(gender);
 		
-		UserVo userVo = new UserRepository().findByEmailAndPassword(vo);
+		UserVo userVo = new UserRepository().updateByEmailAndPassword(vo);
+		
+		
 		if(userVo == null) {
-			request.setAttribute("email", email);
+			System.out.println("userVo 오류 발생");
+			request.setAttribute("no", no);
 			WebUtil.forward(request, response, "/WEB-INF/views/user/loginform.jsp");
 			return;
 		}
 		
 		/* 로그인 처리 */
-		HttpSession session = request.getSession(false);
-		if(session != null) {
-			session.removeAttribute("authUser");
-			session.invalidate();
-		}
-		session = request.getSession(true);
+		HttpSession session = request.getSession(true);
 		session.setAttribute("authUser", userVo);
 		
-		request.setAttribute("userVo", userVo);
-		request.getRequestDispatcher("/WEB-INF/views/user/updateform.jsp").forward(request, response);
+		WebUtil.redirect(request, response, request.getContextPath());
 	}
 
 }
