@@ -20,9 +20,7 @@ public class ListAction implements Action {
 		
 		List<GuestbookVo> list = new GuestbookRepository().findAll();
 		request.setAttribute("list", list);
-		request.getRequestDispatcher("/WEB-INF/views/guestbook/list.jsp").forward(request, response);
-
-		
+		WebUtil.forward(request, response, "/WEB-INF/views/guestbook/list.jsp");
 	}
 
 }

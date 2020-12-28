@@ -40,7 +40,7 @@ public class LoginAction implements Action {
 		session.setAttribute("authUser", userVo);
 		
 		request.setAttribute("userVo", userVo);
-		request.getRequestDispatcher("/WEB-INF/views/user/updateform.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/views/main/index.jsp").forward(request, response);
 	}
 
 }

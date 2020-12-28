@@ -48,7 +48,7 @@ input#kwd	{
 .tbl-ex th	{ 
 	border-top:2px solid #333;
 	border-bottom:2px solid #333; 
-	background-color:#999; 
+	background-color:#65984d; 
 	font-size:1.1em; 
 	color:#fff 
 }
@@ -102,7 +102,7 @@ div.bottom a {
 a#new-book	 { 
 	float:right; 
 	padding:10px 20px 10px 20px ; 
-	border:1px solid #555; 
+	border:1px solid #65984d; 
 	font-weight:bold; 
 	background-color:#E8ECF6; 
 	color:#111 
@@ -112,7 +112,7 @@ a#new-book	 {
 .board-form .bottom input[type="submit"] {
 	float:right; 
 	padding:10px 20px 10px 20px; 
-	border:1px solid #555; 
+	border:1px solid #65984d; 
 	font-weight:bold; 
 	background-color:#E8ECF6; 
 	color:#111;
@@ -131,3 +131,25 @@ a.del	{
 	background:url("/mysite/assets/images/recycle.png") no-repeat 0 0;
 	font-size:0;
 }
+
+div.pager {
+	width:100%;
+	text-align:center;
+}
+div.pager  ul {
+	height:20px;
+	margin:10px auto;
+	list-style-type: none;
+	padding: 0;
+	overflow: hidden;
+	border-top:2px solid #333;
+	border-bottom:2px solid #333; 
+	background-color: #65984d; 
+}
+div.pager  ul li 			{ color:#ddd; display:inline-block; margin:5px 0; width:20px ; font-weight:bold; }
+div.pager  ul li.selected	{ font-size:16px; text-decoration: underline; color:#7350ff }
+div.pager  ul li a,
+div.pager  ul li a:visited,
+div.pager  ul li a:link,
+div.pager  ul li a:active	{ text-decoration: none; color:#ddd }
+div.pager  ul li a:hover	{ text-decoration: none; color:#000 }

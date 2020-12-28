@@ -5,8 +5,35 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>  
 
+<style>
+
+icon-big {
+    padding-left: 30%;
+    font-size: 350%;
+    display: block;
+    color: #9a7a44;
+    margin-bottom: 10px;
+    transform: scale(1);
+}
+
+icon-big:hover {
+    padding-left: 35%;
+    font-size: 350%;
+    display: block;
+    color: #9a7a44;
+    margin-bottom: 10px;
+    transition: transform 0.5s, padding-left 0.5s;
+    transform: scale(1.15);
+}
+</style>
+
+
+
 <div id="header">
 	<h1>MySite</h1>
+	<icon-big><ion-icon name="walk-outline"></ion-icon></icon-big>
+	
+
 	<ul>
 		<c:choose>
 			<c:when test ="${empty authUser }">
@@ -23,3 +50,7 @@
 		</c:choose>
 	</ul>
 </div>
+
+
+<!-- https://www.npmjs.com/package/vue-mousefollower-->
+<!-- Effect inspired by https://codepen.io/supah/pen/RrzREx -->
