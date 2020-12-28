@@ -57,13 +57,42 @@
 			<c:forEach items='${list }' var='vo' varStatus='status'>
 				<tr>
 					<td>${status.count }</td>
-					<td>${vo.title } </td>
+					<td style='text-align:left; padding-left:${vo.depth*9 }px'>
+					
+					<c:choose>
+					<c:when test ="${vo.depth>1}">
+							->
+					</c:when>
+					<c:otherwise>
+					</c:otherwise>
+					</c:choose>
+					${vo.title } 
+					</td>
 					<td>${vo.userName } </td>
 
 					<td>${vo.regDate } </td>
 					<td>${vo.hit } </td>
 					<td>${vo.good } </td>
 					<td>${vo.notGood } </td>
+					
+					<td>
+						
+						<!--  TODO : 지우기 기능 -->
+						<c:choose>
+						<c:when test ="${authUser.no == vo.userNo}">
+						<ion-icon name="trash-outline"></ion-icon>
+						</c:when>
+						
+						<c:otherwise>
+						</c:otherwise>
+						</c:choose>
+					</td>
+					
+	
+					
+					
+					
+					
 				</tr>
 			</c:forEach>
 		</table>
@@ -72,11 +101,15 @@
 		<div class="pager">
 		
 		<ul>
+		
+			<li><ion-icon name="chevron-back-outline"></ion-icon></li>
 		    <c:forEach var="i" begin="1" end="5" step="1">
             <li>
             <a href="${pageContext.request.contextPath }/board?a=list&pagenumber=${i }&pageamountOfarticles=${pageamountOfarticles }">${i }</a>
             </li>
           	</c:forEach>
+          	<li><ion-icon name="chevron-forward-outline"></ion-icon></li>
+          	
 		</ul>		
 		</div>
 		<!-- pager 추가 -->

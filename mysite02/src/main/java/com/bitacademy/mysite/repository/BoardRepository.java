@@ -26,7 +26,7 @@ public class BoardRepository {
 				// 3. SQL 준비
 				String sql = 
 						
-						"select a.no, a.title, date_format(a.reg_date, '%Y-%m-%d / %H시 %i분 %S초'), a.hit, b.name as username, a.good, a.not_good"
+						"select a.no, a.title, date_format(a.reg_date, '%Y-%m-%d / %H시 %i분 %S초'), a.hit, a.user_no, b.name as username, a.good, a.not_good"
 						+", a.group_no, a.order_no, a.depth"
 						+" from board a, user b"
 						+" where a.user_no = b.no"
@@ -55,10 +55,14 @@ public class BoardRepository {
 					String title = rs.getString(2);
 					String regDate = rs.getString(3);
 					Long hit = rs.getLong(4);
-					String userName = rs.getString(5);
-					int good = rs.getInt(6);
-					int notGood = rs.getInt(7);
+					Long userNo = rs.getLong(5);
+					String userName = rs.getString(6);
+					int good = rs.getInt(7);
+					int notGood = rs.getInt(8);
 					
+					Long groupNo = rs.getLong(9);
+					int orderNo = rs.getInt(10);
+					int depth = rs.getInt(11);
 					
 
 					BoardVo vo = new BoardVo();
@@ -66,9 +70,13 @@ public class BoardRepository {
 					vo.setTitle(title);
 					vo.setRegDate(regDate);
 					vo.setHit(hit);
+					vo.setUserNo(userNo);
 					vo.setUserName(userName);
 					vo.setGood(good);
 					vo.setNotGood(notGood);
+					vo.setGroupNo(groupNo);
+					vo.setOrderNo(orderNo);
+					vo.setDepth(depth);
 					
 					list.add(vo);
 				}
