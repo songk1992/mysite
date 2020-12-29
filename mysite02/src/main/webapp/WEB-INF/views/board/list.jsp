@@ -61,7 +61,7 @@
 					
 					<c:choose>
 					<c:when test ="${vo.depth>1}">
-							->
+							<ion-icon name="return-down-forward-outline"></ion-icon>
 					</c:when>
 					<c:otherwise>
 					</c:otherwise>

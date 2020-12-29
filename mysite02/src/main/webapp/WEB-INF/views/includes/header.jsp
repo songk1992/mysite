@@ -33,6 +33,20 @@ icon-big:hover {
 	<h1>MySite</h1>
 	<icon-big><ion-icon name="walk-outline"></ion-icon></icon-big>
 	
+	
+	
+	
+	<div class="wrap">
+  <div class="bg"></div>
+  <h1>Take a look around</h1>
+</div>
+	
+	
+	
+	
+	
+	
+	
 
 	<ul>
 		<c:choose>
