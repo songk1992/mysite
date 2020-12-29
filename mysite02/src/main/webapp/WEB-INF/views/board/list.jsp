@@ -66,7 +66,11 @@
 					<c:otherwise>
 					</c:otherwise>
 					</c:choose>
-					${vo.title } 
+					
+					
+					<a href="${pageContext.request.contextPath }/board?a=view&no=${vo.no }">${vo.title }</a>
+            
+					
 					</td>
 					<td>${vo.userName } </td>
 
@@ -125,7 +129,7 @@
 			</c:when>
 			
 			<c:otherwise>
-						<div class="bottom"><a href="" id="new-book"><ion-icon name="pencil-outline"></ion-icon></a>
+			<div class="bottom"><a href="${pageContext.request.contextPath }/board?a=write" id="new-book"><ion-icon name="pencil-outline"></ion-icon></a>
 						</div>
 			</c:otherwise>
 		</c:choose>

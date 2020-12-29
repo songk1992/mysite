@@ -11,9 +11,11 @@ public class BoardActionFactory extends ActionFactory{
 			if("write".equals(actionName)) {
 				
 			} else if("view".equals(actionName)){
-				
+				action = new ViewAction();
 			} else if("modify".equals(actionName)){
-				
+				action = new WriteAction();
+			} else if("write".equals(actionName)){
+				action = new ModifyAction();
 			} else {
 				// 리스트를 보여준다
 				action = new ListAction();

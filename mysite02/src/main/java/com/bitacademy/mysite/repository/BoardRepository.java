@@ -119,4 +119,85 @@ public class BoardRepository {
 
 		return conn;
 	}
+
+
+	public BoardVo findContentsFromNo(BoardVo vo) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = getConnection();
+
+			// 3. SQL 준비
+			String sql = 
+					
+					"select a.title, a.contents, date_format(a.reg_date, '%Y-%m-%d / %H시 %i분 %S초') as t, a.hit, a.good, a.not_good, b.name as username,\r\n" + 
+					"a.group_no, a.order_no\r\n" + 
+					"from board a, user b\r\n" + 
+					"where a.user_no = b.no and a.no = ?";
+
+			pstmt = conn.prepareStatement(sql);
+			
+			
+			Long ranknumber = vo.getNo();
+			pstmt.setLong(1, ranknumber);
+			
+			// 4. 바인딩
+
+			// 5. sql문 실행
+			rs = pstmt.executeQuery();
+
+			
+			
+			
+			// 6. 데이터 가져오기
+			while (rs.next()) {
+				
+				String title = rs.getString(1);
+				String contents = rs.getString(2);
+				String regDate = rs.getString(3);
+				Long hit = rs.getLong(4);
+				int good = rs.getInt(5);
+				int notGood = rs.getInt(6);
+				String userName = rs.getString(7);
+				Long groupNo = rs.getLong(8);
+				int orderNo = rs.getInt(9);
+
+				// no 는 이미 포함
+				
+				vo.setTitle(title);
+				vo.setContents(contents);
+				vo.setRegDate(regDate);
+				vo.setHit(hit);
+				vo.setGood(good);
+				vo.setNotGood(notGood);
+				vo.setUserName(userName);
+				vo.setGroupNo(groupNo);
+				vo.setOrderNo(orderNo);
+
+			}
+
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			try {
+				// 3. 자원정리
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return vo;
+	}
+
 }
