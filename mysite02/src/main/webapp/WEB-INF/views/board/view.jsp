@@ -50,10 +50,35 @@
 							</div>
 						</td>
 					</tr>
+					
+					<tr>
+						<td><a href="${pageContext.request.contextPath }/board?a=good&no=${vo.no }"><ion-icon name="thumbs-up-outline"></ion-icon></a></td>
+						<td><a href="${pageContext.request.contextPath }/board?a=bad&no=${vo.no }"><ion-icon name="thumbs-down-outline"></ion-icon></a></td>
+					</tr>
+					
+					
+					
 				</table>
 				<div class="bottom">
-				<a href="${pageContext.request.contextPath }/board?a=list">글목록</a>
-            	<a href="${pageContext.request.contextPath }/board?a=modify&no=${vo.no }">글수정</a>
+						<a href="${pageContext.request.contextPath }/board?a=list">글목록</a>
+				
+						<!--  TODO : 수정 기능 -->
+						<c:choose>
+							<c:when test ="${authUser.no == vo.userNo}">
+							<a href="${pageContext.request.contextPath }/board?a=modifyform&no=${vo.no }">글수정</a>
+							</c:when>
+							<c:otherwise>
+							</c:otherwise>
+						</c:choose>
+						
+						<c:choose>
+							<c:when test ="${empty authUser }">
+							</c:when>
+							<c:otherwise>
+								<a href="${pageContext.request.contextPath }/board?a=replyform&no=${vo.no }">답글</a>
+							</c:otherwise>
+						</c:choose>
+            	
 				</div>
 			</div>
 		</div>
@@ -64,5 +89,11 @@
 		<jsp:include page="/WEB-INF/views/includes/footer.jsp" />
 		
 	</div>
+	
+	<!-- 이모티콘 -->
+	<!-- https://ionicons.com/usage#chevron-forward-outline -->
+	<script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+	
+	
 </body>
 </html>

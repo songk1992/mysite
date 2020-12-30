@@ -11,22 +11,25 @@ import com.bitacademy.mysite.vo.BoardVo;
 import com.bitacademy.web.mvc.Action;
 import com.bitacademy.web.util.WebUtil;
 
-public class ViewAction implements Action {
+public class ReplyAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String no = request.getParameter("no");
+		String title = request.getParameter("title");
+		String contents = request.getParameter("contents");
+		String userNo = request.getParameter("userNo");
+
+		
 		BoardVo vo = new BoardVo();
 		vo.setNo(Long.valueOf(no));
+		vo.setTitle(title);
+		vo.setContents(contents);
+		vo.setUserNo(Long.valueOf(userNo));
 		
-		BoardRepository boardRepository = new BoardRepository();
-		
-		boardRepository.addViewCount(vo);
-		vo = boardRepository.findContentsFromNo(vo);
-		
-		request.setAttribute("vo", vo);
-		WebUtil.forward(request, response, "/WEB-INF/views/board/view.jsp");
+		new BoardRepository().createNewReply(vo);
+		WebUtil.redirect(request, response, request.getContextPath() + "/board?a=list");
 	}
 
 }

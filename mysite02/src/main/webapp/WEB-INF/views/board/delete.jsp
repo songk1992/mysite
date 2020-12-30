@@ -22,29 +22,19 @@
 		<div id="content">
 			<div id="board">
 
-				<form class="board-form" method="post" action="${pageContext.request.contextPath }/board" method="post">
-					<input type = "hidden" name = "a" value="write">
-					<input type = "hidden" name = "userNo" value=${authUser.no }>
-					<table class="tbl-ex">
+				<form action="${pageContext.request.contextPath }/board" method="post">
+					<input type='hidden' name='a' value='delete' />
+					<input type='hidden' name='no' value=${vo.no }>
+					<table>
 						<tr>
-							<th colspan="2">글쓰기</th>
-						</tr>
-						<tr>
-							<td class="label">제목</td>
-							<td><input type="text" name="title" value=""></td>
-						</tr>
-						<tr>
-							<td class="label">내용</td>
-							<td>
-								<textarea id="content" name="contents"></textarea>
-							</td>
+							<td>비밀번호</td>
+							<td><input type="password" name="password"></td>
+							<td><input type="submit" value="확인"></td>
+							<td><a href='${pageContext.request.contextPath }/board'>메인으로 돌아가기</a></td>
 						</tr>
 					</table>
-					<div class="bottom">
-						<a href="${pageContext.request.contextPath }/board?a=list">취소</a>
-						<input type="submit" value="등록">
-					</div>
-				</form>				
+				</form>		
+					
 			</div>
 		</div>
 		

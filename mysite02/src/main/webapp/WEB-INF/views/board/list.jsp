@@ -69,7 +69,6 @@
 					
 					
 					<a href="${pageContext.request.contextPath }/board?a=view&no=${vo.no }">${vo.title }</a>
-            
 					
 					</td>
 					<td>${vo.userName } </td>
@@ -81,10 +80,11 @@
 					
 					<td>
 						
-						<!--  TODO : 지우기 기능 -->
+						
 						<c:choose>
 						<c:when test ="${authUser.no == vo.userNo}">
-						<ion-icon name="trash-outline"></ion-icon>
+						<a href="${pageContext.request.contextPath }/board?a=deleteform&no=${vo.no }"><ion-icon name="trash-outline"></ion-icon></a>
+
 						</c:when>
 						
 						<c:otherwise>
@@ -129,8 +129,9 @@
 			</c:when>
 			
 			<c:otherwise>
-			<div class="bottom"><a href="${pageContext.request.contextPath }/board?a=write" id="new-book"><ion-icon name="pencil-outline"></ion-icon></a>
-						</div>
+			<div class="bottom">
+			<a href="${pageContext.request.contextPath }/board?a=writeform" id="new-book"><ion-icon name="pencil-outline"></ion-icon></a>
+			</div>
 			</c:otherwise>
 		</c:choose>
 		

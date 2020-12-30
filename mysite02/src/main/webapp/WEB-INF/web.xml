@@ -57,8 +57,6 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
   <servlet>
-    <description></description>
-    <display-name>BoardController</display-name>
     <servlet-name>BoardController</servlet-name>
     <servlet-class>com.bitacademy.mysite.controller.BoardController</servlet-class>
   </servlet>

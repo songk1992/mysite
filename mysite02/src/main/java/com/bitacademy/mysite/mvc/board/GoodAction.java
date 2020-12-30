@@ -11,7 +11,7 @@ import com.bitacademy.mysite.vo.BoardVo;
 import com.bitacademy.web.mvc.Action;
 import com.bitacademy.web.util.WebUtil;
 
-public class ViewAction implements Action {
+public class GoodAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -21,12 +21,9 @@ public class ViewAction implements Action {
 		vo.setNo(Long.valueOf(no));
 		
 		BoardRepository boardRepository = new BoardRepository();
-		
-		boardRepository.addViewCount(vo);
-		vo = boardRepository.findContentsFromNo(vo);
-		
-		request.setAttribute("vo", vo);
-		WebUtil.forward(request, response, "/WEB-INF/views/board/view.jsp");
+		boardRepository.addGoodCount(vo);
+
+		WebUtil.redirect(request, response, request.getContextPath() + "/board?a=list");
 	}
 
 }
