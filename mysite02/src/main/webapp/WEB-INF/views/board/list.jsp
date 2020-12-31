@@ -37,8 +37,8 @@
 
 		
 		<!-- 보여주는 글 숫자 조절 현재는 10개씩 보여줌-->
-		<c:set var = "pageamountOfarticles" scope = "session" value = "5"/>
-		<!--<c:out value = "${pageamountOfarticles }"/>-->
+		<c:set var = "pageSize" scope = "session" value = "5"/>
+		<!--<c:out value = "${pageSize }"/>-->
 
 
 
@@ -112,7 +112,7 @@
 			<li><ion-icon name="chevron-back-outline"></ion-icon></li>
 		    <c:forEach var="i" begin="1" end="5" step="1">
             <li>
-            <a href="${pageContext.request.contextPath }/board?a=list&pagenumber=${i }&pageamountOfarticles=${pageamountOfarticles }">${i }</a>
+            <a href="${pageContext.request.contextPath }/board?a=list&currentPage=${i }&pageSize=${pageSize }">${i }</a>
             </li>
           	</c:forEach>
           	<li><ion-icon name="chevron-forward-outline"></ion-icon></li>

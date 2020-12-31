@@ -18,36 +18,32 @@ public class ListAction implements Action {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		// TODO : 중복 되는 코드 클래스로 뺴기
-		
 		// null 값이 들어오면 페이지 값을 1로 설정합니다.
-		Integer pageNumber;
-		String tempvalueofpagenumber = request.getParameter("pagenumber");
-		if (tempvalueofpagenumber != null && tempvalueofpagenumber.length() != 0) {
-		    // 값이 있는 경우 처리
-			pageNumber = Integer.valueOf(tempvalueofpagenumber);
-		} else {
-		    // 값이 없는 경우 처리
-			pageNumber = 1;
-		}
+		Integer currentPage = nullCheckAndSetDefaultValue(request.getParameter("currentPage"), 1);
 		
 		// null 값이 들어오면 글 개수  값을  5로 설정합니다.
-		Integer pageamountOfarticles;
-		String tempvalueofpageamountofarticles = request.getParameter("pageamountOfarticles");
-		if (tempvalueofpageamountofarticles != null && tempvalueofpageamountofarticles.length() != 0) {
-		    // 값이 있는 경우 처리
-			pageamountOfarticles = Integer.valueOf(tempvalueofpageamountofarticles);
-		} else {
-		    // 값이 없는 경우 처리
-			pageamountOfarticles = 5;
-		}
+		Integer pageSize = nullCheckAndSetDefaultValue(request.getParameter("pageSize"), 5);
+	
 		
 		PageNumberVo pageNumberVo = new PageNumberVo();
-		pageNumberVo.setPageAmountOfArticles(pageamountOfarticles);
-		pageNumberVo.setPageNumber(pageNumber);
+		pageNumberVo.setPageSize(pageSize);
+		pageNumberVo.setCurrentPage(currentPage);
 		
 		List<BoardVo> list = new BoardRepository().findAll(pageNumberVo);
 		request.setAttribute("list", list);
 		WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");
+	}
+
+	private Integer nullCheckAndSetDefaultValue(String input_str, Integer return_value) {
+		
+		String tempStr = input_str;
+		
+		if (tempStr != null && tempStr.length() != 0) {
+		    // 값이 있는 경우 처리
+			return_value = Integer.valueOf(tempStr);
+		} else {
+		    // 값이 없는 경우 처리
+		}
+		return return_value;
 	}
 }

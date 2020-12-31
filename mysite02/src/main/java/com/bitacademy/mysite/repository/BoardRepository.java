@@ -33,10 +33,10 @@ public class BoardRepository {
 							+ " order by a.group_no desc, a.order_no asc" + " limit ?, ?";
 			pstmt = conn.prepareStatement(sql);
 
-			Integer pageNumber = (pageNumberVo.getPageNumber() - 1) * 5;
-			Integer pageAmountOfArticles = pageNumberVo.getPageAmountOfArticles();
-			pstmt.setInt(1, pageNumber);
-			pstmt.setInt(2, pageAmountOfArticles);
+			Integer currentPage = (pageNumberVo.getCurrentPage() - 1) * 5;
+			Integer pageSize = pageNumberVo.getPageSize();
+			pstmt.setInt(1, currentPage);
+			pstmt.setInt(2, pageSize);
 			// 4. 바인딩
 
 			// 5. sql문 실행
