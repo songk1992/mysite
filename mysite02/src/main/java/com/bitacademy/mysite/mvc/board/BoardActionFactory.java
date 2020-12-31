@@ -32,6 +32,8 @@ public class BoardActionFactory extends ActionFactory{
 				action = new GoodAction();
 			} else if("bad".equals(actionName)){
 				action = new BadAction();
+			} else if("search".equals(actionName)){
+				action = new SearchAction();
 			}else {
 				// 리스트를 보여준다
 				action = new ListAction();

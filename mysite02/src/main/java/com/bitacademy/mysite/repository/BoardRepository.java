@@ -335,16 +335,15 @@ public class BoardRepository {
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
-		
+
 		try {
 			conn = getConnection();
 
 			// 3. SQL 준비
-			String sql = 
-					
-					"delete from board\r\n" + 
-					"where no = ? \r\n" + 
-					"and user_no = (select no from user where user.no = board.user_no and password=?)";
+			String sql =
+
+					"delete from board\r\n" + "where no = ? \r\n"
+							+ "and user_no = (select no from user where user.no = board.user_no and password=?)";
 
 			pstmt = conn.prepareStatement(sql);
 
@@ -375,8 +374,7 @@ public class BoardRepository {
 
 		return result;
 	}
-	
-	
+
 	public boolean addViewCount(BoardVo vo) {
 		boolean result = false;
 
@@ -387,15 +385,12 @@ public class BoardRepository {
 			conn = getConnection();
 
 			// 3. SQL 준비
-			String sql = "update board\r\n" + 
-					"set hit = hit+1\r\n" + 
-					"where no = ?";
+			String sql = "update board\r\n" + "set hit = hit+1\r\n" + "where no = ?";
 
 			pstmt = conn.prepareStatement(sql);
 
 			// 4. 바인딩
 			pstmt.setString(1, String.valueOf(vo.getNo()));
-
 
 			// 5. sql문 실행
 			int count = pstmt.executeUpdate();
@@ -431,15 +426,12 @@ public class BoardRepository {
 			conn = getConnection();
 
 			// 3. SQL 준비
-			String sql = "update board\r\n" + 
-					"set good = good+1\r\n" + 
-					"where no = ?";
+			String sql = "update board\r\n" + "set good = good+1\r\n" + "where no = ?";
 
 			pstmt = conn.prepareStatement(sql);
 
 			// 4. 바인딩
 			pstmt.setString(1, String.valueOf(vo.getNo()));
-
 
 			// 5. sql문 실행
 			int count = pstmt.executeUpdate();
@@ -475,15 +467,12 @@ public class BoardRepository {
 			conn = getConnection();
 
 			// 3. SQL 준비
-			String sql = "update board\r\n" + 
-					"set not_good = not_good+1\r\n" + 
-					"where no = ?";
+			String sql = "update board\r\n" + "set not_good = not_good+1\r\n" + "where no = ?";
 
 			pstmt = conn.prepareStatement(sql);
 
 			// 4. 바인딩
 			pstmt.setString(1, String.valueOf(vo.getNo()));
-
 
 			// 5. sql문 실행
 			int count = pstmt.executeUpdate();
@@ -507,6 +496,91 @@ public class BoardRepository {
 		}
 
 		return result;
+	}
+
+	public List<BoardVo> findWithKeyword(String kwd) {
+		List<BoardVo> list = new ArrayList<>();
+
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = getConnection();
+
+			// 3. SQL 준비
+			String sql =
+
+					"select a.no, a.title, date_format(a.reg_date, '%Y-%m-%d / %H시 %i분 %S초'), a.hit, a.user_no, b.name as username,  a.good, a.not_good,\r\n" + 
+					"a.group_no, a.order_no, a.depth\r\n" + 
+					"from board a, user b\r\n" + 
+					"WHERE a.title REGEXP ?\r\n" + 
+					"or a.contents REGEXP ?\r\n" + 
+					"or b.name REGEXP ?";
+
+			pstmt = conn.prepareStatement(sql);
+
+			pstmt.setString(1, kwd);
+			pstmt.setString(2, kwd);
+			pstmt.setString(3, kwd);
+
+			// 4. 바인딩
+
+			// 5. sql문 실행
+			rs = pstmt.executeQuery();
+
+			// 6. 데이터 가져오기
+			while (rs.next()) {
+
+				Long no = rs.getLong(1);
+				String title = rs.getString(2);
+				String regDate = rs.getString(3);
+				Long hit = rs.getLong(4);
+				Long userNo = rs.getLong(5);
+				String userName = rs.getString(6);
+				int good = rs.getInt(7);
+				int notGood = rs.getInt(8);
+
+				Long groupNo = rs.getLong(9);
+				int orderNo = rs.getInt(10);
+				int depth = rs.getInt(11);
+
+				BoardVo vo = new BoardVo();
+				vo.setNo(no);
+				vo.setTitle(title);
+				vo.setRegDate(regDate);
+				vo.setHit(hit);
+				vo.setUserNo(userNo);
+				vo.setUserName(userName);
+				vo.setGood(good);
+				vo.setNotGood(notGood);
+				vo.setGroupNo(groupNo);
+				vo.setOrderNo(orderNo);
+				vo.setDepth(depth);
+
+				list.add(vo);
+			}
+
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		} finally {
+			try {
+				// 3. 자원정리
+				if (rs != null) {
+					rs.close();
+				}
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return list;
 	}
 
 }
