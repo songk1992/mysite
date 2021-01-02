@@ -9,7 +9,7 @@ public class BoardActionFactory extends ActionFactory{
 			Action action = null;
 			
 			if("hello".equals(actionName)) {
-				
+				action = new SpaceTravelAction();
 			} else if("view".equals(actionName)){
 				action = new ViewAction();
 			} else if("modify".equals(actionName)){
