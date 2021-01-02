@@ -514,10 +514,10 @@ public class BoardRepository {
 					"select a.no, a.title, date_format(a.reg_date, '%Y-%m-%d / %H시 %i분 %S초'), a.hit, a.user_no, b.name as username,  a.good, a.not_good,\r\n" + 
 					"a.group_no, a.order_no, a.depth\r\n" + 
 					"from board a, user b\r\n" + 
-					"WHERE a.title REGEXP ?\r\n" + 
+					"WHERE (a.title REGEXP ?\r\n" + 
 					"or a.contents REGEXP ?\r\n" + 
-					"or b.name REGEXP ?";
-
+					"or b.name REGEXP ?)"
+					+ "and a.user_no = b.no";
 			pstmt = conn.prepareStatement(sql);
 
 			pstmt.setString(1, kwd);
