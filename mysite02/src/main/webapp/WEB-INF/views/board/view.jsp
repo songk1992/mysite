@@ -52,8 +52,20 @@
 					</tr>
 					
 					<tr>
-						<td><a href="${pageContext.request.contextPath }/board?a=good&no=${vo.no }"><ion-icon name="thumbs-up-outline"></ion-icon></a></td>
-						<td><a href="${pageContext.request.contextPath }/board?a=bad&no=${vo.no }"><ion-icon name="thumbs-down-outline"></ion-icon></a></td>
+						<td>
+						<div class="rating">
+						<a href="${pageContext.request.contextPath }/board?a=good&no=${vo.no }"><ion-icon name="thumbs-up-outline"></ion-icon></a>
+						</div>
+						
+						
+						</td>
+						
+						
+						<td>
+						<div class="rating">
+						<a href="${pageContext.request.contextPath }/board?a=bad&no=${vo.no }"><ion-icon name="thumbs-down-outline"></ion-icon></a>
+						</div>
+						</td>
 					</tr>
 					
 					

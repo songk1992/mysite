@@ -153,3 +153,24 @@ div.pager  ul li a:visited,
 div.pager  ul li a:link,
 div.pager  ul li a:active	{ text-decoration: none; color:#ddd }
 div.pager  ul li a:hover	{ text-decoration: none; color:#000 }
+
+
+.rating{
+	margin-top: 5px;
+	font-size: 20px;
+	text-align: center;
+	font-weight: 1200;
+	color: transparent;
+    text-shadow: 0 0 #0cd1e8;
+}
+
+
+
+
+
+
+
+
+
+
+
