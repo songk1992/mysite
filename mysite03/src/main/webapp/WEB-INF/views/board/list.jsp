@@ -24,8 +24,7 @@
 			<div id="board">
 
 		<!-- 찾기 기능 -->
-		<form id="search_form" action="${pageContext.request.contextPath }/board" method="post">
-			<input type='hidden' name='a' value='search' />
+		<form id="search_form" action="${pageContext.request.contextPath }/board/search">
 			<input type="text" id="kwd" name="kwd" value=""> <input
 				type="submit" value="찾기">
 		</form>
@@ -86,7 +85,7 @@
 						
 						<c:choose>
 						<c:when test ="${authUser.no == vo.userNo}">
-						<a href="${pageContext.request.contextPath }/board?a=deleteform&no=${vo.no }"><ion-icon name="trash-outline"></ion-icon></a>
+						<a href="${pageContext.request.contextPath }/board/delete/${vo.no }"><ion-icon name="trash-outline"></ion-icon></a>
 
 						</c:when>
 						

@@ -22,9 +22,8 @@
 		<div id="content">
 			<div id="board">
 
-				<form class="board-form" method="post" action="${pageContext.request.contextPath }/board" method="post">
-					<input type = "hidden" name = "a" value="reply">
-					<input type = "hidden" name = "no" value=${vo.no }>
+				<form class="board-form" method="post" action="${pageContext.request.contextPath }/board/reply" method="post">
+					<input type = "hidden" name = "no" value=${no }>
 					<input type = "hidden" name = "userNo" value=${authUser.no }>
 					<table class="tbl-ex">
 						<tr>
@@ -42,7 +41,7 @@
 						</tr>
 					</table>
 					<div class="bottom">
-						<a href="${pageContext.request.contextPath }/board?a=list">취소</a>
+						<a href="${pageContext.request.contextPath }/board">취소</a>
 						<input type="submit" value="등록">
 					</div>
 				</form>				

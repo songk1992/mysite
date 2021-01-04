@@ -123,6 +123,9 @@ public class BoardRepository {
 			pstmt.setString(2, vo.getContents());
 			pstmt.setString(3, String.valueOf(vo.getUserNo()));
 
+			System.out.println(pstmt);
+			
+			
 			// 5. sql문 실행
 			int count = pstmt.executeUpdate();
 
@@ -240,6 +243,7 @@ public class BoardRepository {
 			pstmt.setString(2, vo.getContents());
 			pstmt.setString(3, String.valueOf(vo.getNo()));
 
+			
 			// 5. sql문 실행
 			int count = pstmt.executeUpdate();
 
@@ -512,7 +516,6 @@ public class BoardRepository {
 			pstmt.setString(1, kwd);
 			pstmt.setString(2, kwd);
 			pstmt.setString(3, kwd);
-
 			// 4. 바인딩
 
 			// 5. sql문 실행

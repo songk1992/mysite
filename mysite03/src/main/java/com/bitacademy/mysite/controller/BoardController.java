@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bitacademy.mysite.service.BoardService;
 import com.bitacademy.mysite.vo.BoardVo;
+import com.bitacademy.mysite.vo.UserVo;
 
 
 @Controller
@@ -31,44 +32,76 @@ public class BoardController {
 	public String write() {
 		return "board/write";
 	}
+	
+	@RequestMapping(value="/write", method=RequestMethod.POST)
+	public String write(BoardVo boardVo) {
+		boardService.writeArticle(boardVo);
+		return "redirect:/board";
+	}
 
 	@RequestMapping(value="/view/{no}")
 	public String view(@PathVariable("no") Long no, Model model) {
+		boardService.addViewCount(no);
 		BoardVo boardVo = boardService.viewArticle(no);
 		model.addAttribute("boardVo", boardVo);
 		return "board/view";
 	}
 	
-	@RequestMapping("/modify")
-	public String modify() {
-		return null;
+	@RequestMapping(value="/modify/{no}", method=RequestMethod.GET)
+	public String modify(@PathVariable("no") Long no, Model model) {
+		model.addAttribute("no", no);
+		return "board/modify";
+	}
+
+	@RequestMapping(value="/modify", method=RequestMethod.POST)
+	public String modify(BoardVo boardVo) {
+		boardService.modifyArticle(boardVo);
+		return "redirect:/board";
+	}
+	
+	@RequestMapping(value="/reply/{no}", method=RequestMethod.GET)
+	public String reply(@PathVariable("no") Long no, Model model) {
+		model.addAttribute("no", no);
+		return "board/reply";
+	}
+	
+	@RequestMapping(value="/reply", method=RequestMethod.POST)
+	public String reply(BoardVo boardVo) {
+		boardService.replyArticle(boardVo);
+		return "redirect:/board";
+	}
+	
+	@RequestMapping(value="/delete/{no}", method=RequestMethod.GET)
+	public String delete(@PathVariable("no") Long no, Model model) {
+		model.addAttribute("no", no);
+		return "board/delete";
+	}
+	
+	@RequestMapping(value="/delete", method=RequestMethod.POST)
+	public String delete(UserVo userVo, BoardVo boardVo) {
+		boardService.deleteArticle(userVo, boardVo);
+		return "redirect:/board";
 	}
 
 	
-
-	
-	@RequestMapping("/delete")
-	public String delete() {
-		return null;
+	@RequestMapping("/good/{no}")
+	public String good(@PathVariable("no") Long no) {
+		boardService.likeArticle(no);
+		return "redirect:/board";
 	}
 	
-	@RequestMapping("/reply")
-	public String reply() {
-		return null;
+	@RequestMapping("/bad/{no}")
+	public String bad(@PathVariable("no") Long no) {
+		boardService.dislikeArticle(no);
+		return "redirect:/board";
 	}
 	
-	@RequestMapping("/good")
-	public String good() {
-		return null;
-	}
 	
-	@RequestMapping("/bad")
-	public String bad() {
-		return null;
-	}
 	
 	@RequestMapping("/search")
-	public String search() {
-		return null;
+	public String search(String kwd, Model model) {
+		List<BoardVo> list = boardService.searchArticle(kwd);
+		model.addAttribute("list", list);
+		return "board/list";
 	}
 }

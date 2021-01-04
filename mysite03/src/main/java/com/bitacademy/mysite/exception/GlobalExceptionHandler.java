@@ -13,8 +13,8 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(Exception.class)
 	public String handleException(Exception e) throws Exception {
 		// 1. Logging
-		System.out.println(e.getStackTrace());
-		
+		e.printStackTrace();
+	
 		// 2. 사과 (안내 페이지 포워딩, 정상종료)
 		return "error/exception";
 		

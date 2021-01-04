@@ -22,9 +22,8 @@
 		<div id="content">
 			<div id="board">
 
-				<form action="${pageContext.request.contextPath }/board" method="post">
-					<input type='hidden' name='a' value='delete' />
-					<input type='hidden' name='no' value=${vo.no }>
+				<form action="${pageContext.request.contextPath }/board/delete" method="post">
+					<input type='hidden' name='no' value=${no }>
 					<table>
 						<tr>
 							<td>비밀번호</td>

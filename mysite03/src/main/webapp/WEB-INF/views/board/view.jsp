@@ -54,7 +54,7 @@
 					<tr>
 						<td>
 						<div class="rating">
-						<a href="${pageContext.request.contextPath }/board?a=good&no=${boardVo.no }"><ion-icon name="thumbs-up-outline"></ion-icon></a>
+						<a href="${pageContext.request.contextPath }/board/good/${boardVo.no }"><ion-icon name="thumbs-up-outline"></ion-icon></a>
 						</div>
 						
 						
@@ -63,7 +63,7 @@
 						
 						<td>
 						<div class="rating">
-						<a href="${pageContext.request.contextPath }/board?a=bad&no=${boardVo.no }"><ion-icon name="thumbs-down-outline"></ion-icon></a>
+						<a href="${pageContext.request.contextPath }/board/bad/${boardVo.no }"><ion-icon name="thumbs-down-outline"></ion-icon></a>
 						</div>
 						</td>
 					</tr>
@@ -77,7 +77,7 @@
 						<!--  TODO : 수정 기능 -->
 						<c:choose>
 							<c:when test ="${authUser.no == boardVo.userNo}">
-							<a href="${pageContext.request.contextPath }/board?a=modifyform&no=${boardVo.no }">글수정</a>
+							<a href="${pageContext.request.contextPath }/board/modify/${boardVo.no }">글수정</a>
 							</c:when>
 							<c:otherwise>
 							</c:otherwise>
@@ -87,7 +87,7 @@
 							<c:when test ="${empty authUser }">
 							</c:when>
 							<c:otherwise>
-								<a href="${pageContext.request.contextPath }/board?a=replyform&no=${boardVo.no }">답글</a>
+								<a href="${pageContext.request.contextPath }/board/reply/${boardVo.no }">답글</a>
 							</c:otherwise>
 						</c:choose>
             	

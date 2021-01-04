@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.bitacademy.mysite.repository.BoardRepository;
 import com.bitacademy.mysite.vo.BoardVo;
 import com.bitacademy.mysite.vo.PageNumberVo;
+import com.bitacademy.mysite.vo.UserVo;
 
 @Service
 public class BoardService {
@@ -34,4 +35,48 @@ public class BoardService {
 		return boardVo;
 		
 	}
+	
+	public boolean addViewCount(Long no) {
+		BoardVo boardVo = new BoardVo();
+		boardVo.setNo(no);
+		return boardRepository.addViewCount(boardVo);
+	}
+
+	public boolean writeArticle(BoardVo boardVo) {
+		return boardRepository.createNewArticle(boardVo);
+	}
+
+	public boolean modifyArticle(BoardVo boardVo) {
+		return boardRepository.modifyArticle(boardVo);
+	}
+
+	public boolean replyArticle(BoardVo boardVo) {
+		return boardRepository.createNewReply(boardVo);
+		
+	}
+
+	public boolean deleteArticle(UserVo userVo, BoardVo boardVo) {
+		return boardRepository.deleteArticle(userVo, boardVo);
+		
+	}
+
+	
+	
+	public boolean likeArticle(Long no) {
+		BoardVo boardVo = new BoardVo();
+		boardVo.setNo(no);
+		return boardRepository.addGoodCount(boardVo);
+	}
+
+	public boolean dislikeArticle(Long no) {
+		BoardVo boardVo = new BoardVo();
+		boardVo.setNo(no);
+		return boardRepository.addNotGoodCount(boardVo);
+	}
+
+	public List<BoardVo> searchArticle(String kwd) {
+		return boardRepository.findWithKeyword(kwd);
+	}
+
+
 }
