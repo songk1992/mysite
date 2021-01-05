@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.bitacademy.mysite.vo.BoardVo;
@@ -18,6 +21,9 @@ import com.bitacademy.mysite.vo.UserVo;
 @Repository
 public class BoardRepository {
 
+	@Autowired
+	private DataSource dataSource;
+	
 	public List<BoardVo> findAll(PageNumberVo pageNumberVo) {
 		List<BoardVo> list = new ArrayList<>();
 
@@ -26,7 +32,7 @@ public class BoardRepository {
 		ResultSet rs = null;
 
 		try {
-			conn = getConnection();
+			conn = dataSource.getConnection();
 
 			// 3. SQL 준비
 			String sql =
@@ -108,7 +114,7 @@ public class BoardRepository {
 		PreparedStatement pstmt = null;
 
 		try {
-			conn = getConnection();
+			conn = dataSource.getConnection();
 
 			// 3. SQL 준비
 			String sql = "insert into board (no, title, contents, hit, reg_date, group_no, order_no, depth, good, not_good, user_no)\r\n"
@@ -156,7 +162,7 @@ public class BoardRepository {
 		ResultSet rs = null;
 
 		try {
-			conn = getConnection();
+			conn = dataSource.getConnection();
 
 			// 3. SQL 준비
 			String sql =
@@ -231,7 +237,7 @@ public class BoardRepository {
 		PreparedStatement pstmt = null;
 
 		try {
-			conn = getConnection();
+			conn = dataSource.getConnection();
 
 			// 3. SQL 준비
 			String sql = "update board\r\n" + "set title =?, contents =?\r\n" + "where no = ?;";
@@ -275,7 +281,7 @@ public class BoardRepository {
 		PreparedStatement pstmt = null;
 
 		try {
-			conn = getConnection();
+			conn = dataSource.getConnection();
 
 			// 3. SQL 준비
 			// depth의 최대치는 3
@@ -330,7 +336,7 @@ public class BoardRepository {
 		PreparedStatement pstmt = null;
 
 		try {
-			conn = getConnection();
+			conn = dataSource.getConnection();
 
 			// 3. SQL 준비
 			String sql =
@@ -375,8 +381,8 @@ public class BoardRepository {
 		PreparedStatement pstmt = null;
 
 		try {
-			conn = getConnection();
-
+			conn = dataSource.getConnection();
+			
 			// 3. SQL 준비
 			String sql = "update board\r\n" + "set hit = hit+1\r\n" + "where no = ?";
 
@@ -416,7 +422,7 @@ public class BoardRepository {
 		PreparedStatement pstmt = null;
 
 		try {
-			conn = getConnection();
+			conn = dataSource.getConnection();
 
 			// 3. SQL 준비
 			String sql = "update board\r\n" + "set good = good+1\r\n" + "where no = ?";
@@ -457,7 +463,7 @@ public class BoardRepository {
 		PreparedStatement pstmt = null;
 
 		try {
-			conn = getConnection();
+			conn = dataSource.getConnection();
 
 			// 3. SQL 준비
 			String sql = "update board\r\n" + "set not_good = not_good+1\r\n" + "where no = ?";
@@ -499,7 +505,7 @@ public class BoardRepository {
 		ResultSet rs = null;
 
 		try {
-			conn = getConnection();
+			conn = dataSource.getConnection();
 
 			// 3. SQL 준비
 			String sql =
@@ -573,22 +579,6 @@ public class BoardRepository {
 		}
 
 		return list;
-	}
-
-	private Connection getConnection() throws SQLException {
-		Connection conn = null;
-		try {
-			// 1. JDBC Driver 로딩
-			Class.forName("org.mariadb.jdbc.Driver");
-
-			// 2. 연결하기
-			String url = "jdbc:mysql://192.168.200.191:3306/webdb?characterEncoding=utf8";
-			conn = DriverManager.getConnection(url, "webdb", "webdb");
-		} catch (ClassNotFoundException e) {
-			System.out.println("드라이버 로딩 실패:" + e);
-		}
-
-		return conn;
 	}
 	
 	
