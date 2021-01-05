@@ -12,7 +12,10 @@ public class UserService {
 	private UserRepository userRepository;
 
 	public boolean join(UserVo vo) {
+		
+		System.out.println("B" + vo);
 		int count = userRepository.insert(vo);
+		System.out.println(vo);
 		return count == 1;
 	}
 
@@ -25,8 +28,15 @@ public class UserService {
 	}
 
 	public boolean updateUser(UserVo vo) {
-		int count = userRepository.update(vo);
-		return count == 1;
+		
+		if(null == vo.getPassword() || "".equals(vo.getPassword())) {
+			return false;
+		}
+		
+		else {
+			return (userRepository.update(vo) == 1);
+		}
+		
 	}
 	
 	

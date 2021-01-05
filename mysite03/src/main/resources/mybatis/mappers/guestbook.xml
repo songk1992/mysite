@@ -3,6 +3,17 @@
 
 <mapper namespace="guestbook">
 
+	<select id="count" resultType='integer'>
+	<![CDATA[
+	select count(*) from guestbook
+	]]>
+	
+	</select>
+
+
+
+
+
 	<select id='findAll' resultType='guestbookvo'>
 	<![CDATA[
 	select no, name, date_format(reg_date, '%Y-%m-%d / %H시 %i분 %S초') as datetime, message 
@@ -10,6 +21,25 @@
 	order by reg_date desc
 	]]>
 	</select>
+
+
+	<select id='findAllByNo' parameterType='long' resultType='guestbookvo'>
+	<![CDATA[
+	select no, name, date_format(reg_date, '%Y-%m-%d / %H시 %i분 %S초') as datetime, message 
+	from guestbook 
+	]]>
+	
+	<if test='_parameter > 0'>
+		where no > #{_parameter }
+	</if>
+	
+	<![CDATA[
+	order by reg_date desc
+		imit 0, 3
+	]]>
+	
+	</select>
+
 
 	<insert id='save' parameterType='guestbookvo'>
 		<![CDATA[

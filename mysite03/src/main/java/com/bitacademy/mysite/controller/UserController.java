@@ -74,29 +74,31 @@ public class UserController {
 		if(authUser == null) {
 			return "redirect:/";
 		}
-		
 		Long no = authUser.getNo();
 		UserVo userVo = userService.getUser(no);
 		
-		model.addAttribute("vo", userVo);
+		model.addAttribute("userVo", userVo);
 		return "user/update";
 	}
 
 	@RequestMapping(value="/update", method=RequestMethod.POST)
-	public String update(HttpSession session, UserVo userVo) {
+	public String update(HttpSession session, UserVo userVo, Model model) {
 		// ACL(접근제어)
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		if(authUser == null) {
 			return "redirect:/";
 		}
+		userService.updateUser(userVo);
 		
 		Long no = authUser.getNo();
-		userVo.setNo(no);
+		userVo = userService.getUser(no);
 		
-		authUser.setName(userVo.getName());
 		
-		userService.updateUser(userVo);
-		return "redirect:/user/update";
+		if(userVo != null) {
+			authUser.setName(userVo.getName());
+			model.addAttribute("userVo", userVo);
+		}
+		return "user/update";
 	}
 	
 }

@@ -40,7 +40,7 @@
 
 			<c:otherwise>
 				<li><a
-					href="${pageContext.request.contextPath }/user/updateform?no=${authUser.no }&name=${authUser.name }">회원정보수정</a></li>
+					href="${pageContext.request.contextPath }/user/update">회원정보수정</a></li>
 				<li><a href="${pageContext.request.contextPath }/user/logout">로그아웃</a></li>
 				<li>${authUser.name}님안녕하세요^^;</li>
 			</c:otherwise>
