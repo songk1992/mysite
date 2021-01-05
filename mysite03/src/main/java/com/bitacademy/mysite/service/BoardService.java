@@ -42,15 +42,15 @@ public class BoardService {
 		return boardRepository.addViewCount(boardVo);
 	}
 
-	public boolean writeArticle(BoardVo boardVo) {
+	public int writeArticle(BoardVo boardVo) {
 		return boardRepository.createNewArticle(boardVo);
 	}
 
-	public boolean modifyArticle(BoardVo boardVo) {
+	public int modifyArticle(BoardVo boardVo) {
 		return boardRepository.modifyArticle(boardVo);
 	}
 
-	public boolean replyArticle(BoardVo boardVo) {
+	public int replyArticle(BoardVo boardVo) {
 		return boardRepository.createNewReply(boardVo);
 		
 	}
