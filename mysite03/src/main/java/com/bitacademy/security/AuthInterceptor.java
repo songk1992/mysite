@@ -27,14 +27,14 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		Auth auth = handlerMethod.getMethodAnnotation(Auth.class);
 		
 		// 4. Method에  @Auth가 안붙어 있는 경우, Type(Class)에 붙어 있는 지 확인한다.(과제)
-		if(auth == null) {
+		if(auth == null  && (auth == handler.getClass().getAnnotation(Auth.class))) {
 
-			if (auth == handler.getClass().getAnnotation(Auth.class)) {
-				// 5. Method나 Type(Class)에 @Auth 가 없는 경우
-				return true;
-			};
-			
 			auth = handlerMethod.getMethod().getDeclaringClass().getAnnotation(Auth.class);
+		}
+
+		// 5. Method나 Type(Class)에 @Auth 가 없는 경우
+		if(auth == null) {
+			return true;
 		}
 		
 		// 6. @Auth가 붙어 있기 때문에 인증(Authentification) 여부 확인
