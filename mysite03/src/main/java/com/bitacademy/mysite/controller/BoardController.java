@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.bitacademy.mysite.service.BoardService;
 import com.bitacademy.mysite.vo.BoardVo;
 import com.bitacademy.mysite.vo.UserVo;
+import com.bitacademy.security.Auth;
 
-
+//@Auth TODO:
 @Controller
 @RequestMapping("/board")
 public class BoardController {
@@ -26,7 +27,6 @@ public class BoardController {
 		model.addAttribute("list", list);
 		return "board/list";
 	};
-	
 	
 	@RequestMapping(value="/write", method=RequestMethod.GET)
 	public String write() {

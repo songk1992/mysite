@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.bitacademy.mysite.service.UserService;
 import com.bitacademy.mysite.vo.UserVo;
+import com.bitacademy.security.Auth;
+import com.bitacademy.security.AuthUser;
+import com.bitacademy.security.Role;
 
 @Controller
 @RequestMapping("/user")
@@ -34,46 +37,15 @@ public class UserController {
 	public String login() {
 		return "user/login";
 	}
-
-	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public String login(HttpSession session, @ModelAttribute UserVo userVo) {
-		UserVo authUser = userService.getUser(userVo);
-		if(authUser == null) {
-			return "user/login";
-		}
-		
-		// 인증처리
-		session.setAttribute("authUser", authUser);
-		return "redirect:/";
-	}
-
-	@RequestMapping(value="/logout")
-	public String logout(HttpSession session) {
-		// ACL(접근제어)
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		if(authUser == null) {
-			return "redirect:/";
-		}
-		
-		// 로그아웃 처리
-		session.removeAttribute("authUser");
-		session.invalidate();
-		
-		return "redirect:/";
-	}
 	
 	@RequestMapping("/joinsuccess")
 	public String joinSuccess() {
 		return "user/joinsuccess";
 	}
 	
+	@Auth
 	@RequestMapping(value="/update", method=RequestMethod.GET)
-	public String update(HttpSession session, Model model) {
-		// ACL(접근제어)
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		if(authUser == null) {
-			return "redirect:/";
-		}
+	public String update(@AuthUser UserVo authUser, Model model) {
 		Long no = authUser.getNo();
 		UserVo userVo = userService.getUser(no);
 		
@@ -81,24 +53,18 @@ public class UserController {
 		return "user/update";
 	}
 
+	@Auth
 	@RequestMapping(value="/update", method=RequestMethod.POST)
-	public String update(HttpSession session, UserVo userVo, Model model) {
-		// ACL(접근제어)
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		if(authUser == null) {
-			return "redirect:/";
-		}
-		userService.updateUser(userVo);
+	public String update(@AuthUser UserVo authUser, UserVo userVo, Model model) {
+		
 		
 		Long no = authUser.getNo();
-		userVo = userService.getUser(no);
+		userVo.setNo(no);
 		
+		authUser.setName(userVo.getName());
 		
-		if(userVo != null) {
-			authUser.setName(userVo.getName());
-			model.addAttribute("userVo", userVo);
-		}
-		return "user/update";
+		userService.updateUser(userVo);
+		return "redirect:/user/update";
 	}
 	
 }

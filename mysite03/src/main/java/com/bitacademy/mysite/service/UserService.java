@@ -29,13 +29,7 @@ public class UserService {
 
 	public boolean updateUser(UserVo vo) {
 		
-		if(null == vo.getPassword() || "".equals(vo.getPassword())) {
-			return false;
-		}
-		
-		else {
-			return (userRepository.update(vo) == 1);
-		}
+		return (userRepository.update(vo) == 1);
 		
 	}
 	
