@@ -28,11 +28,13 @@ public class BoardController {
 		return "board/list";
 	};
 	
+	@Auth
 	@RequestMapping(value="/write", method=RequestMethod.GET)
 	public String write() {
 		return "board/write";
 	}
 	
+	@Auth
 	@RequestMapping(value="/write", method=RequestMethod.POST)
 	public String write(BoardVo boardVo) {
 		boardService.writeArticle(boardVo);
@@ -47,49 +49,56 @@ public class BoardController {
 		return "board/view";
 	}
 	
+	@Auth
 	@RequestMapping(value="/modify/{no}", method=RequestMethod.GET)
 	public String modify(@PathVariable("no") Long no, Model model) {
 		model.addAttribute("no", no);
 		return "board/modify";
 	}
 
+	@Auth
 	@RequestMapping(value="/modify", method=RequestMethod.POST)
 	public String modify(BoardVo boardVo) {
 		boardService.modifyArticle(boardVo);
 		return "redirect:/board";
 	}
 	
+	@Auth
 	@RequestMapping(value="/reply/{no}", method=RequestMethod.GET)
 	public String reply(@PathVariable("no") Long no, Model model) {
 		model.addAttribute("no", no);
 		return "board/reply";
 	}
 	
+	@Auth
 	@RequestMapping(value="/reply", method=RequestMethod.POST)
 	public String reply(BoardVo boardVo) {
 		boardService.replyArticle(boardVo);
 		return "redirect:/board";
 	}
 	
+	@Auth
 	@RequestMapping(value="/delete/{no}", method=RequestMethod.GET)
 	public String delete(@PathVariable("no") Long no, Model model) {
 		model.addAttribute("no", no);
 		return "board/delete";
 	}
 	
+	@Auth
 	@RequestMapping(value="/delete", method=RequestMethod.POST)
 	public String delete(UserVo userVo, BoardVo boardVo) {
 		boardService.deleteArticle(userVo, boardVo);
 		return "redirect:/board";
 	}
 
-	
+	@Auth
 	@RequestMapping("/good/{no}")
 	public String good(@PathVariable("no") Long no) {
 		boardService.likeArticle(no);
 		return "redirect:/board";
 	}
 	
+	@Auth
 	@RequestMapping("/bad/{no}")
 	public String bad(@PathVariable("no") Long no) {
 		boardService.dislikeArticle(no);
