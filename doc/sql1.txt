@@ -1,0 +1,131 @@
+use webdb;
+
+show tables;
+
+alter table user convert to charset utf8;
+
+
+select * from user;
+
+select * from emaillist;
+
+insert into emaillist (no, last_name, first_name, email)
+Values
+(null,'둘리','example','email');
+
+desc board;
+select * from board;
+
+update board
+set title ="3", contents ="3"
+where no = 34;
+
+
+SELECT MAX(group_no)
+FROM board;
+
+
+SELECT MAX(group_no)
+FROM board;
+
+
+insert into board (no, title, contents, hit, reg_date, group_no, order_no, depth, good, not_good, user_no)
+Values
+(null,'example','example',0,now(),
+(SELECT IFNULL(MAX(b.group_no) + 1, 1) FROM board b),
+1,
+1,
+0,
+0,
+2);
+
+
+SELECT group_no
+from board
+where no = 7;
+
+insert into board (no, title, contents, hit, reg_date, group_no, order_no, depth, good, not_good, user_no)
+Values
+(null,'example','example',0,now(),
+(SELECT c.group_no from board c where no = 34),
+(SELECT IFNULL(MAX(b.order_no) + 1, 1) FROM board b where group_no = (SELECT c.group_no from board c where no = 34)),
+(SELECT LEAST((SELECT IFNULL(MAX(b.depth) + 1, 1) FROM board b where group_no = (SELECT c.group_no from board c where no = 34)), 3)),
+0,
+0,
+2)
+;
+select * from board;
+
+insert into board (no, title, contents, hit, reg_date, group_no, order_no, depth, good, not_good, user_no)
+Values
+(null,'example','example',0,now(),
+(SELECT IFNULL(MAX(b.group_no) + 1, 1) FROM board b),1,1,0,0,2),
+(null,'example','example',0,now(),14,1 ,1,0,0,2),
+(null,'example','example',0,now(),15,1,1,0,0,2),
+(null,'example','example',0,now(),16,1,1,0,0,2);
+
+DELETE FROM board WHERE no>34;
+
+select a.no, a.title, date_format(a.reg_date, '%Y-%m-%d / %H시 %i분 %S초'), a.hit, b.name as username, a.user_no, a.good, a.not_good,
+a.group_no, a.order_no, a.depth
+from board a, user b
+where a.user_no = b.no
+order by a.group_no desc, a.order_no asc
+limit 0, 10;
+
+select * from user;
+
+update board
+set depth =3
+where no = 2;
+
+select a.title, a.contents, date_format(a.reg_date, '%Y-%m-%d / %H시 %i분 %S초') as t, a.hit, a.good, a.not_good, b.name as username,
+a.group_no, a.order_no
+from board a, user b
+where a.user_no = b.no and a.no = "3";
+
+
+delete from board
+where no = 55
+and user_no = (select no from user where user.no = board.user_no and password=1234);
+
+update board
+set hit = hit+1
+where no = 52;
+
+select * from user;
+select * from board;
+
+select a.no, a.title, date_format(a.reg_date, '%Y-%m-%d / %H시 %i분 %S초'), a.hit, a.user_no, b.name as username,  a.good, a.not_good,
+a.group_no, a.order_no, a.depth
+from board a, user b
+WHERE a.title REGEXP '라면'
+or a.contents REGEXP 'exampl'
+or b.name REGEXP 'exampleman';
+
+
+
+
+
+
+
+select * from user;
+
+alter table user add column role enum("USER", "ADMIN") default "USER" after gender;
+
+insert into user values(null, 'admin', 'admin', '1234', 'male', 'ADMIN', now());
+
+
+select * from admin;
+
+alter table admin convert to character set utf8;
+
+insert into admin values(null, 
+'Happy New Year',
+'2021', 
+"안녕하세요. JAVAFULLSTACK mysite에 오신 것을 환영합니다.", 
+'image', 
+"이 사이트는 웹 프로그램밍 실습과제 예제 사이트입니다.
+메뉴는 사이트 소개, 방명록, 게시판이 있구요. Java 수업 + 데이터베이스 수업 + Spring 수업 배운 거 있는거 없는 거 다 합쳐서 만들어 놓은 사이트 입니다."
+);
+

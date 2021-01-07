@@ -1,0 +1,174 @@
+-- 이메일리스트
+DROP TABLE IF EXISTS `emaillist` RESTRICT;
+
+-- 도서
+DROP TABLE IF EXISTS `book` RESTRICT;
+
+-- CompanyEmployeeList
+DROP TABLE IF EXISTS `emptable` RESTRICT;
+
+-- 방명록
+DROP TABLE IF EXISTS `guestbook` RESTRICT;
+
+-- 사용자
+DROP TABLE IF EXISTS `user` RESTRICT;
+
+-- 게시판
+DROP TABLE IF EXISTS `board` RESTRICT;
+
+-- 관리자페이지
+DROP TABLE IF EXISTS `admin` RESTRICT;
+
+-- 이메일리스트
+CREATE TABLE `emaillist` (
+	`no`         INT(10) UNSIGNED NOT NULL COMMENT '번호', -- 번호
+	`last_name`  VARCHAR(10)      NOT NULL COMMENT '성', -- 성
+	`first_name` VARCHAR(50)      NOT NULL COMMENT '이름', -- 이름
+	`email`      VARCHAR(200)     NOT NULL COMMENT '이메일' -- 이메일
+)
+COMMENT '이메일리스트';
+
+-- 이메일리스트
+ALTER TABLE `emaillist`
+	ADD CONSTRAINT `PK_emaillist` -- 이메일리스트 기본키
+		PRIMARY KEY (
+			`no` -- 번호
+		);
+
+ALTER TABLE `emaillist`
+	MODIFY COLUMN `no` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '번호';
+
+-- 도서
+CREATE TABLE `book` (
+	`no`     INT(10) UNSIGNED NOT NULL COMMENT 'no', -- no
+	`title`  VARCHAR(50)      NOT NULL COMMENT '제목', -- 제목
+	`author` VARCHAR(50)      NOT NULL COMMENT '저자', -- 저자
+	`price`  INT              NOT NULL COMMENT '가격' -- 가격
+)
+COMMENT '도서';
+
+-- 도서
+ALTER TABLE `book`
+	ADD CONSTRAINT `PK_book` -- 도서 기본키
+		PRIMARY KEY (
+			`no` -- no
+		);
+
+ALTER TABLE `book`
+	MODIFY COLUMN `no` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'no';
+
+-- CompanyEmployeeList
+CREATE TABLE `emptable` (
+	`ssn`       INT(12) UNSIGNED NOT NULL COMMENT 'ssn', -- ssn
+	`lastname`  VARCHAR(50)      NOT NULL COMMENT 'lastname', -- lastname
+	`firstname` VARCHAR(50)      NOT NULL COMMENT 'firstname', -- firstname
+	`wage`      INT(20) UNSIGNED NULL     COMMENT 'wage', -- wage
+	`email`     VARCHAR(50)      NULL     COMMENT 'email' -- email
+)
+COMMENT 'CompanyEmployeeList';
+
+-- CompanyEmployeeList
+ALTER TABLE `emptable`
+	ADD CONSTRAINT `PK_emptable` -- CompanyEmployeeList 기본키
+		PRIMARY KEY (
+			`ssn` -- ssn
+		);
+
+-- 방명록
+CREATE TABLE `guestbook` (
+	`no`       INT UNSIGNED NOT NULL COMMENT '번호', -- 번호
+	`name`     VARCHAR(50)  NOT NULL COMMENT '이름', -- 이름
+	`password` VARCHAR(16)  NOT NULL COMMENT '비밀번호', -- 비밀번호
+	`message`  TEXT         NOT NULL COMMENT '메시지', -- 메시지
+	`reg_date` DATETIME     NOT NULL COMMENT '등록일' -- 등록일
+)
+COMMENT '방명록';
+
+-- 방명록
+ALTER TABLE `guestbook`
+	ADD CONSTRAINT `PK_guestbook` -- 방명록 기본키
+		PRIMARY KEY (
+			`no` -- 번호
+		);
+
+ALTER TABLE `guestbook`
+	MODIFY COLUMN `no` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '번호';
+
+-- 사용자
+CREATE TABLE `user` (
+	`no`        INT UNSIGNED          NOT NULL COMMENT '번호', -- 번호
+	`name`      VARCHAR(50)           NOT NULL COMMENT '이름', -- 이름
+	`email`     VARCHAR(100)          NOT NULL COMMENT '이메일', -- 이메일
+	`password`  VARCHAR(64)           NOT NULL COMMENT '비밀번호', -- 비밀번호
+	`gender`    enum('male','female') NOT NULL COMMENT '성별', -- 성별
+	`join_date` DATETIME              NOT NULL COMMENT '가입일' -- 가입일
+)
+COMMENT '사용자';
+
+-- 사용자
+ALTER TABLE `user`
+	ADD CONSTRAINT `PK_user` -- 사용자 기본키
+		PRIMARY KEY (
+			`no` -- 번호
+		);
+
+ALTER TABLE `user`
+	MODIFY COLUMN `no` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '번호';
+
+-- 게시판
+CREATE TABLE `board` (
+	`no`       INT UNSIGNED NOT NULL COMMENT '글번호', -- 글번호
+	`title`    VARCHAR(200) NOT NULL COMMENT '제목', -- 제목
+	`contents` TEXT         NOT NULL COMMENT '내용', -- 내용
+	`hit`      INT UNSIGNED NOT NULL COMMENT '조회수', -- 조회수
+	`reg_date` DATETIME     NOT NULL COMMENT '작성일', -- 작성일
+	`group_no` INT UNSIGNED NOT NULL COMMENT '글 그룹', -- 글 그룹
+	`order_no` INT          NOT NULL COMMENT '그룹내글순서', -- 그룹내글순서
+	`depth`    INT          NOT NULL COMMENT '글깊이', -- 글깊이
+	`good`     INT UNSIGNED NOT NULL COMMENT '좋아요', -- 좋아요
+	`not_good` INT UNSIGNED NOT NULL COMMENT '싫어요', -- 싫어요
+	`user_no`  INT UNSIGNED NOT NULL COMMENT '서용자 번호' -- 서용자 번호
+)
+COMMENT '게시판';
+
+-- 게시판
+ALTER TABLE `board`
+	ADD CONSTRAINT `PK_board` -- 게시판 기본키
+		PRIMARY KEY (
+			`no`,      -- 글번호
+			`user_no`  -- 서용자 번호
+		);
+
+ALTER TABLE `board`
+	MODIFY COLUMN `no` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '글번호';
+
+-- 관리자페이지
+CREATE TABLE `admin` (
+	`adminsettingno`  INT UNSIGNED NOT NULL COMMENT '번호', -- 번호
+	`sitetitle1`      VARCHAR(50)  NOT NULL COMMENT '사이트_타이틀1', -- 사이트_타이틀1
+	`sitetitle2`      VARCHAR(50)  NULL     COMMENT '사이트_타이틀2', -- 사이트_타이틀2
+	`welcomemessage`  TEXT         NOT NULL COMMENT '환영메시지', -- 환영메시지
+	`profileimage`    VARCHAR(200) NOT NULL COMMENT '프로필이미지', -- 프로필이미지
+	`sitedescription` TEXT         NOT NULL COMMENT '사이트_설명' -- 사이트_설명
+)
+COMMENT '관리자페이지';
+
+-- 관리자페이지
+ALTER TABLE `admin`
+	ADD CONSTRAINT `PK_admin` -- 관리자페이지 기본키
+		PRIMARY KEY (
+			`adminsettingno` -- 번호
+		);
+
+ALTER TABLE `admin`
+	MODIFY COLUMN `adminsettingno` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '번호';
+
+-- 게시판
+ALTER TABLE `board`
+	ADD CONSTRAINT `FK_user_TO_board` -- 사용자 -> 게시판
+		FOREIGN KEY (
+			`user_no` -- 서용자 번호
+		)
+		REFERENCES `user` ( -- 사용자
+			`no` -- 번호
+		);

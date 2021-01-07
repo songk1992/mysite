@@ -20,8 +20,27 @@
 <!-- https://codepen.io/Web_yuki1027/details/KKgQbQE -->
 <section class="section">
 	<h2 class="section__title">
-		Happy New Year<br>
-		<span>2021</span>
+	
+	<c:choose>
+	  <c:when test="${not empty siteVo.title1 }">
+	    ${siteVo.title1 }
+	  </c:when>
+	  <c:otherwise>
+	    마이
+	  </c:otherwise>
+	</c:choose>
+		
+	<br>
+	<span>
+		<c:choose>
+		  <c:when test="${not empty siteVo.title2 }">
+		    ${siteVo.title2 }
+		  </c:when>
+		  <c:otherwise>
+		    사이트
+		  </c:otherwise>
+		</c:choose>
+	</span>
 	</h2>
 </section>
 

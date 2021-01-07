@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="site">
+
+
+<select id='findLatestMainPageContents' resultType='sitevo'>
+<![CDATA[
+select siteno, title1, title2, welcomemessage, profileurl, description
+from site where siteno = 
+(SELECT MAX(siteno)
+FROM site)
+]]>
+</select>
+
+
+
+</mapper>
