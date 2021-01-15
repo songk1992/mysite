@@ -1,8 +1,9 @@
 package com.bitacademy.config.app;
 
+import javax.sql.DataSource;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.tomcat.jdbc.pool.DataSource;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.context.ApplicationContext;
@@ -29,7 +30,8 @@ public class MyBatisConfig {
 	public SqlSessionFactory sqlSessionFactory(DataSource dataSource, ApplicationContext applicationContext) throws Exception{
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 		sqlSessionFactoryBean.setDataSource(dataSource);
-		sqlSessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:com/bitacadey/mysite/config/app/mybatis/configuration.xml"));
+		sqlSessionFactoryBean.setConfigLocation(applicationContext.getResource(
+				"classpath:com/bitacademy/mysite/config/app/mybatis/configuration.xml"));
 		
 		return sqlSessionFactoryBean.getObject();
 	}
