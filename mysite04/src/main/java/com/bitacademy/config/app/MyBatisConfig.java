@@ -25,10 +25,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MyBatisConfig {
 	
+	@Bean
 	public SqlSessionFactory sqlSessionFactory(DataSource dataSource, ApplicationContext applicationContext) throws Exception{
 		SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 		sqlSessionFactoryBean.setDataSource(dataSource);
-		sqlSessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:com/bitacadey/mysite/app/mybatis/configuration.xml"));
+		sqlSessionFactoryBean.setConfigLocation(applicationContext.getResource("classpath:com/bitacadey/mysite/config/app/mybatis/configuration.xml"));
 		
 		return sqlSessionFactoryBean.getObject();
 	}
