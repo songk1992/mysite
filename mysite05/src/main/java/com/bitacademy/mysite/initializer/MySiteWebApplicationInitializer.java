@@ -1,6 +1,9 @@
 package com.bitacademy.mysite.initializer;
 
+import javax.servlet.Filter;
+
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.FrameworkServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
@@ -37,6 +40,11 @@ public class MySiteWebApplicationInitializer extends AbstractAnnotationConfigDis
 		dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
 		
 		return dispatcherServlet;
+	}
+
+	@Override
+	protected Filter[] getServletFilters() {
+		return new Filter[] { new CharacterEncodingFilter("UTF-8", true)};
 	}
 	
 	
