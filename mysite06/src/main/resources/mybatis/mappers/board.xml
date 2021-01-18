@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="board">
+
+<select id='findAll' resultType='boardvo'>
+<![CDATA[
+select a.no, a.title, date_format(a.reg_date, '%Y-%m-%d / %H시 %i분 %S초') as regdate, 
+a.hit, a.user_no as userNo, b.name as username, a.good, a.not_good as notGood, 
+a.group_no, a.order_no, a.depth from board a, user b
+where a.user_no = b.no
+order by a.group_no desc, a.order_no asc
+limit #{currentPage }, #{pageSize }
+]]>
+</select>
+
+
+
+<insert id="createNewArticle" parameterType="boardVo">
+<![CDATA[
+insert into board (no, title, contents, hit, reg_date, group_no, 
+order_no, depth, good, not_good, user_no)
+Values(
+null,#{title },#{contents },0,now(),
+(SELECT IFNULL(MAX(b.group_no) + 1, 1) FROM board b),
+1, 1, 0, 0, #{userNo })
+]]>
+</insert>
+
+<select id="findContentsFromNo" parameterType="boardVo" resultType='boardvo'>
+<![CDATA[
+select a.no, a.title, a.contents, 
+date_format(a.reg_date, '%Y-%m-%d / %H시 %i분 %S초') as reg_date, 
+a.hit, a.good, a.not_good, b.name as username,
+a.group_no, a.order_no, b.no as userNo from board a, user b
+where a.user_no = b.no and a.no = #{no }
+]]>
+</select>
+
+<update id="modifyArticle" parameterType="boardVo">
+<![CDATA[
+update board
+set title =#{title }, contents =#{contents }
+where no = #{no }
+]]>
+</update>
+
+<insert id="createNewReply" parameterType="boardVo">
+<![CDATA[
+insert into board (no, title, contents, hit, reg_date, group_no, 
+order_no, depth, good, not_good, user_no)
+Values(null,#{title },#{contents },0,now(),
+(SELECT c.group_no from board c where no = #{no }),
+(SELECT IFNULL(MAX(b.order_no) + 1, 1) FROM board b where group_no = (SELECT d.group_no from board d where no = #{no })),
+(SELECT LEAST((SELECT IFNULL(MAX(b.depth) + 1, 1) FROM board b where group_no = (SELECT e.group_no from board e where no = #{no })), 3)),
+0, 0, #{userNo })
+]]>
+</insert>
+
+
+
+<delete id='deleteArticle' parameterType='map'>
+	<!--TODO 삭제 수정해야함 -->
+
+	<![CDATA[
+		delete from board
+		where no = #{no }
+		and user_no = (select no from user where user.no = board.user_no and password=#{password })
+	]]>
+
+</delete>
+
+<update id="addViewCount" parameterType="boardVo">
+<![CDATA[
+update board
+set hit = hit+1
+where no = #{no }
+]]>
+</update>
+
+<update id="addGoodCount" parameterType="boardVo">
+<![CDATA[
+update board
+set good = good+1
+where no = #{no }
+]]>
+</update>
+
+<update id="addNotGoodCount" parameterType="boardVo">
+<![CDATA[
+update board
+set not_good = not_good+1
+where no = #{no }
+]]>
+</update>
+
+
+<select id='findWithKeyword' parameterType="string" resultType='boardvo'>
+<![CDATA[
+select a.no, a.title, date_format(a.reg_date, '%Y-%m-%d / %H시 %i분 %S초'), a.hit, a.user_no, b.name as username,  a.good, a.not_good,
+a.group_no, a.order_no, a.depth
+from board a, user b
+WHERE (a.title REGEXP #{_kwd }
+or a.contents REGEXP #{_kwd }
+or b.name REGEXP #{_kwd })
+and a.user_no = b.no
+]]>
+</select>
+
+
+</mapper>
