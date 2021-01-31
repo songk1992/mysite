@@ -92,6 +92,13 @@ icon-big:hover {
   animation: animate linear infinite;
 }
 
+._year {
+	text-align: center;
+}
+
+
+
+
 @keyframes floating {
   0%, 100% {
     transform: skewY(-7deg) translate(0, -20px);

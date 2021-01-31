@@ -4,6 +4,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>  
 
+<script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+<script src="${pageContext.request.contextPath }/assets/js/footer.js"></script>
+<script type="text/javascript">
+FooterFunction.init();
+</script>
+
 <div id="footer">
-	<p>(c)opyright 2015, 2016, 2017, 2018, 2019, 2020, 2021</p>
+	<p class="_year"></p>
 </div>
