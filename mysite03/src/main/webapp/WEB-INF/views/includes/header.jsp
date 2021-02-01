@@ -8,11 +8,8 @@
 
 
 <head>
-<script src="${pageContext.request.contextPath }/assets/js/script2.js"></script>
-<script
-	src="${pageContext.request.contextPath }/assets/js/header_hello2021.js"></script>
-<script
-	src="${pageContext.request.contextPath }/assets/js/header_random_spawn.js"></script>
+<script src="${pageContext.request.contextPath }/assets/js/header_hello2021.js"></script>
+<script src="${pageContext.request.contextPath }/assets/js/header_random_spawn.js"></script>
 </head>
 
 
