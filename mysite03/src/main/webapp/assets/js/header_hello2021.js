@@ -22,7 +22,7 @@ const stars = () => {
     star.style.animationDuration = 2 + duration + 's';
     star.style.animationDelay = 2 + duration + 's';
     
-    section.appendChild(star);
+   // section.appendChild(star);
     i++;
   }
 }

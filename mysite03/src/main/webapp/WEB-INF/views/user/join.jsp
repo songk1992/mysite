@@ -13,6 +13,41 @@
 <script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
 $(function(){
+	$('#join-form').submit(function(e){
+		
+		e.preventDefault();
+		
+			if($('#name').val()==''){
+				alert('이름이 비어있습니다');
+				$('#name').focus();
+				return;
+			}
+	
+			if($('#email').val()==''){
+				alert('이메일이 비어있습니다');
+				$('#email').focus();
+				return;
+			}
+			
+			if($('#img-check-email').is(':hidden')){
+				alert('이메일 중복체크');
+				return;
+			}
+	
+			if(!$('#agree-prov').is(':checked')){
+				alert('약관 동의가 필요합니다');
+				$('#agree-prov').focus();
+				return;
+			}
+			
+			this.submit();
+	});
+	
+	$('email').change(function(){
+		$('#img-check-email').hide();
+		$('#btn-check-email').show();
+	})
+	
 	$('#btn-check-email').click(function(){
 		let email = $("#email").val();
 		if(email==''){
@@ -21,7 +56,7 @@ $(function(){
 		}
 		
 		$.ajax({
-			url: '${pageContext.request.contextPath }/api/user/existemail?' + email,
+			url: '${pageContext.request.contextPath }/api/user/existemail?email=' + email,
 			async: true,
 			data: '',
 			dataType: 'json',
