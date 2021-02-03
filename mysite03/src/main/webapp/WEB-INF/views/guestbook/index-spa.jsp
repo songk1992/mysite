@@ -10,12 +10,21 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/assets/css/guestbook-spa.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-3.1.1.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/ejs/ejs.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
 
 <script>
 let startNo = 0;
 let isEnd = false; // 깃발 변수
+
+const listTemplate = new EJS({
+	url: '${pageContext.request.contextPath }/assets/js/ejs/list-template.ejs'
+});
+
+const listItemTemplate = new EJS({
+	url: '${pageContext.request.contextPath }/assets/js/ejs/list-item-template.ejs'
+});
+
 
 /* guestbook spa application*/
 let render = function(vo){
@@ -31,7 +40,7 @@ let render = function(vo){
 	$('#list-guestbook').append(html);
 }
 
-let fetchList = function(){
+const fetchList = function(){
 	if(isEnd){
 		return;	
 	}
@@ -56,16 +65,17 @@ let fetchList = function(){
 			}
 			
 			// rendering
-			response.data.forEach(render);
+			//response.data.forEach(render);
+			const html = listTemplate.render(response);
+			$("#list-guestbook").append(html);
 			
-			//
 			// startNo = response.data[response.data.length-1]["no"];
 			startNo = $('#list-guestbook li').last().data('no') || 0;
 		},
 		error: function(xhr, status, e){
 			console.log(status + ':' + e);
 		}
-	})
+	});
 
 }
 
@@ -75,6 +85,45 @@ $(function(){
 	// 버튼 이벤트(test)
 	$('#btn-fetch').click(fetchList());
 
+	
+	// 입력폼 submit 이밴트
+	$('#add-form').submit(function(event){
+		event.preventDefault();
+		
+		vo = {};
+		//validation
+		vo.name = $('#input-name').val();
+		vo.password = $('#input-password').val();
+		vo.message = $('#tx-message').val();
+		
+		// post
+		$.ajax({
+		url: '${pageContext.request.contextPath }/api/guestbook/add',
+		aync: true,
+		type: 'post',
+		dataType: 'json',
+		data: JSON.stringify(vo),
+		contentType: 'application/json',
+		success: function(response){
+			if(response.result != 'success'){
+				console.error(response.message);
+				return;
+			}
+
+			const html = listItemTemplate.render(response.data);
+			$("#list-guestbook").prepend(html);
+			
+			$('#add-form')[0].reset();
+		},
+		error: function(xhr, status, e){
+			console.log(status + ':' + e);
+		}
+		
+		});
+	});
+	
+	
+	
 	// 창스크롤 이벤트
 	$(window).scroll(function(){
 		const $window = $(this);
@@ -87,14 +136,12 @@ $(function(){
 		if(windowHeight + scrollTop + 10 > documentHeight){
 			fetchList();
 		}
-		
-		
 	});
-	// 첫번째 리스트 가져오기
 	
+	// 첫번째 리스트 가져오기
+	fetchList();
+
 });
-
-
 </script>
 
 
@@ -110,7 +157,7 @@ $(function(){
 				<form id="add-form" action="" method="post">
 					<input type="text" id="input-name" placeholder="이름">
 					<input type="password" id="input-password" placeholder="비밀번호">
-					<textarea id="tx-content" placeholder="내용을 입력해 주세요."></textarea>
+					<textarea id="tx-message" placeholder="내용을 입력해 주세요."></textarea>
 					<input type="submit" value="보내기" />
 				</form>
 				<ul id="list-guestbook">
