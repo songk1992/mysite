@@ -27,6 +27,28 @@ const listItemTemplate = new EJS({
 
 
 /* guestbook spa application*/
+ 
+ 
+ const messagebox = function(title, message, callback){
+	$("dialog-message")
+	.attr('title', title)
+	.dialog({
+		modal: true,
+		buttons: {
+			"확인" : function(){
+				$(this).dialog('close');
+			}
+		},
+		close: callback || function(){}
+		
+	});
+	
+	$("#dialog-message p")
+		.height($("dialog-message").height())
+		.width($("dialog-message").width())
+		.html(message.replace(/\n/gi, '<br>'));
+}
+
 let render = function(vo){
 	let html = 					
 	"<li data-no='"+ vo.no +"'>"+
@@ -82,6 +104,58 @@ const fetchList = function(){
 
 
 $(function(){
+	
+	const dialogDelete = $("#dialog-delete-form").dialog({
+		width: 300,
+		height: 200,
+		autoOpen: false,
+		modal: true,
+		buttons: {
+			"삭제":function(){
+				const password = $('#password-delete').val();
+				const no = $('#hidden-no').val();
+				$.ajax({
+					url: '${pageContext.request.contextPath }/api/guestbook/delete/' + no,
+					aync: true,
+					type: 'delete',
+					dataType: 'json',
+					data: 'password=' + password,
+					success: function(response){
+						console.log(response);
+						if(response.result != 'success'){
+							console.error(response.message);
+							return;
+						}
+						
+						// detect end
+						if(response.data != -1){
+							$("#list-guestbook li[data-no=" + response.data +"]").remove();
+							dialogDelete.dialog('close');
+							return;
+						}
+						
+						// 비밀번호가 틀린 경우
+						$("#dialog-delete-form p.validateTips.error").show();
+					},
+					error: function(xhr, status, e){
+						console.log(status + ':' + e);
+					}
+				});
+			},
+			
+			"취소" : function(){
+				$(this).dialog('close');
+			}
+		},
+		
+		close : function(){
+			$("#password-delete").val('');
+			$("#hidden-no").val('');
+			$("#dialog-delete-form p.validateTips.error").hide();
+		}
+	});
+	
+	
 	// 버튼 이벤트(test)
 	$('#btn-fetch').click(fetchList());
 
@@ -138,11 +212,53 @@ $(function(){
 		}
 	});
 	
+	
+	
+	// Live Event : 존재하지 않는 element의 이벤트 핸들러를 미리 세팅하는 것
+	// delegation(위임, document)
+	// 삭제버튼 클릭 이벤트
+	$(document).on('click', '#list-guestbook li a', function(event){
+		event.preventDefault();
+		
+		const no = $(this).data('no');
+		$('#hidden-no').val(no);
+		dialogDelete.dialog('open');
+
+	});
+
+	
+	
 	// 첫번째 리스트 가져오기
 	fetchList();
 
+	// jQuery Plugin Test
+	$("#btn-fetch").hello();
+	$("#btn-fetch").flash();
 });
 </script>
+
+
+<script>
+(function($){
+	$.fn.hello = function(){
+		console.log(this);
+		console.log("hello #" + this.attr('title'));
+	}
+})(jQuery);
+
+(function($){
+	$.fn.flash = function(){
+			const $this =this;
+			let isBlink = false;
+			setInterval(function(){
+				$this.css('backgroundColor', (isBlink ? '#f00' : '#aaa'));
+				isBlink = !isBlink;
+			}, 1000);
+	}
+})(jQuery);
+
+</script>
+
 
 
 </head>
@@ -160,32 +276,22 @@ $(function(){
 					<textarea id="tx-message" placeholder="내용을 입력해 주세요."></textarea>
 					<input type="submit" value="보내기" />
 				</form>
-				<ul id="list-guestbook">
-
-
-					
-									
-				</ul>
+				<ul id="list-guestbook"></ul>
 				<div style='margin:20px 0 0 0'>
-					<button id='btn-fetch'>다음가져오기</button>		
+					<button id='btn-fetch' title='jQuery plugin'>다음가져오기</button>		
 				</div>
-
-				
-				
-				
-				
-				
-				
 			</div>
+			
 			<div id="dialog-delete-form" title="메세지 삭제" style="display:none">
   				<p class="validateTips normal">작성시 입력했던 비밀번호를 입력하세요.</p>
   				<p class="validateTips error" style="display:none">비밀번호가 틀립니다.</p>
   				<form>
  					<input type="password" id="password-delete" value="" class="text ui-widget-content ui-corner-all">
 					<input type="hidden" id="hidden-no" value="">
-					<input type="submit" tabindex="-1" style="position:absolute; top:-1000px">
+					<input type="submit" tabindex="-1">
   				</form>
 			</div>
+			
 			<div id="dialog-message" title="" style="display:none">
   				<p></p>
 			</div>						
