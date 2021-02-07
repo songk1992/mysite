@@ -1,0 +1,12 @@
+
+<li>
+	<a	href="${pageContext.request.contextPath }<%=vo.imageUrl%>"
+		data-lightbox="gallery"
+		class="image"
+		style="background-image:url('${pageContext.request.contextPath }<%=vo.imageUrl%>')">&nbsp;</a>
+		
+	<a	href="${pageContext.request.contextPath }/gallery/delete/<%=vo.no%>"
+		class="del-button"
+		title="삭제">삭제</a>
+</li>
+

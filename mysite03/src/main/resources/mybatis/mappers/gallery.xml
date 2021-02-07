@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="gallery">
+<insert id="addimage" parameterType="galleryVo">
+<![CDATA[
+insert into gallery values(
+null,#{comments },#{imageUrl }
+);
+]]>
+</insert>
+
+
+
+<select id='findAllByNo' resultType='galleryVo' parameterType='long'>
+<![CDATA[
+select no, comment as comments, image_url as imageUrl
+from gallery
+]]>
+
+<if test="_parameter > 0">
+<![CDATA[
+where no < #{_parameter }
+]]>
+</if>
+
+<![CDATA[
+order by no desc
+limit 0, 3
+]]>
+</select>
+
+
+
+</mapper>

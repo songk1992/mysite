@@ -1,25 +1,32 @@
-package com.bitacademy.mysite.controller;
+package com.bitacademy.mysite.controller.api;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bitacademy.mysite.dto.JsonResult;
 import com.bitacademy.mysite.service.GalleryService;
 import com.bitacademy.mysite.vo.GalleryVo;
 
-@Controller
-@RequestMapping("/gallery")
+
+@RestController("galleryApiController")
+@RequestMapping("/api/gallery")
 public class GalleryController {
-	
+
 	@Autowired
 	private GalleryService galleryService;
 	
-	@RequestMapping("")
-	public String index() {
-		return "gallery/index";
+	@RequestMapping("/list/{no}")
+	public JsonResult list(@PathVariable("no") Long startNo) {
+		List<GalleryVo> list = galleryService.getImageList(startNo);
+		return JsonResult.success(list);
 	}
 	
 	@RequestMapping(value="/upload", method=RequestMethod.POST)
@@ -37,6 +44,4 @@ public class GalleryController {
 				
 			return "gallery/index";
 		}
-	
-	
 }
